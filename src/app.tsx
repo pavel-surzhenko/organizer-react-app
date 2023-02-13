@@ -6,12 +6,10 @@ import { FC } from 'react';
 
 // Instruments
 
-
 export const App: FC = () => {
     return (
         <main>
-            <h1>Органайзер</h1>
+            <h1>Органайзер!</h1>
         </main>
     );
 };
-

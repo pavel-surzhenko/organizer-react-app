@@ -1,6 +1,5 @@
 // Core
 import { AnyAction, compose, Middleware } from 'redux';
-/* eslint-disable import/no-extraneous-dependencies, node/no-unpublished-import */
 import { createLogger } from 'redux-logger';
 
 export const logger = createLogger({
