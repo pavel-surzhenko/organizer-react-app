@@ -1,6 +1,8 @@
 // Core
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
 
 // Components
 import { App } from './app';
@@ -13,7 +15,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 render(
     <Provider store = { store }>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </Provider>,
     document.getElementById('root'),
     () => {

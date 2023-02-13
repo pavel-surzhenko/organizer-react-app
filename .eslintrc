@@ -1,6 +1,7 @@
 {
     "extends": [
-        "@sotream/eslint-config-react-ts"
+        "@sotream/eslint-config-react-ts",
+        "prettier"
     ],
     "rules": {
         "no-void": "off",
