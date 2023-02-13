@@ -1,6 +1,6 @@
-import { LoginForm } from "../components/Login";
+import { LoginForm } from "../components";
 
-export const LoginPage = () => {
+export const LoginPage: React.FC = () => {
     return (
         <LoginForm />
     );

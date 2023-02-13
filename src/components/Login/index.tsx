@@ -10,7 +10,7 @@ export const LoginForm: React.FC = () => {
                         <input placeholder="Email" type="text" name="email" />
                     </label>
                     <label className="label">
-                        <input type="password" placeholder="password" name="password"/>
+                        <input type="password" placeholder="Password" name="password"/>
                     </label>
                     <input type="submit" className="button-login" value='log in'/>
                 </fieldset>

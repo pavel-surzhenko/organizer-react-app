@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Navigation } from './components';
-import { LoginPage } from './pages';
+import { LoginPage, SignUpPage } from './pages';
 
 // Components
 
@@ -16,6 +16,7 @@ export const App: FC = () => {
             <main>
                 <Routes>
                     <Route path='/login' element={<LoginPage />} />
+                    <Route path='/signup' element={<SignUpPage />} />
                 </Routes>
             </main>
         </>
