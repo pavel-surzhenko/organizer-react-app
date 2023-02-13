@@ -1,6 +1,6 @@
 import { SignUpForm } from "../components";
 
-export const SignUpPage = () => {
+export const SignUpPage: React.FC = () => {
     return (
         <SignUpForm />
     );
