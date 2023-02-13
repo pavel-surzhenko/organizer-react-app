@@ -1,10 +1,40 @@
 // Core
-// import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { ISignUp } from '../components/SignUp/config';
+import { TASKS_URL, AUTH_URL } from './config';
 
-export const TODO_API_URL = 'https://lab.lectrum.io/rtx/api/v2/todos';
+
 
 export const api = Object.freeze({
-    getVersion() {
-        return '0.0.1';
+    get token() {
+        return localStorage.getItem('token');
     },
+    auth: {
+        async signup(userInfo: ISignUp): Promise<ISignUpWithToken> {
+            const { data } = await axios.post<ISignUp, AxiosResponse<ISignUpWithToken>>(
+                `${AUTH_URL}/registration`,
+                userInfo,
+                {
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                });
+
+            return data;
+        },
+    },
+    tasks: {
+    }
 });
+
+export interface ILogin {
+    data: string;
+}
+
+export interface ISignUpWithToken {
+    data: string;
+}
+
+export interface IUpdatePassword {
+    data: string;
+}
