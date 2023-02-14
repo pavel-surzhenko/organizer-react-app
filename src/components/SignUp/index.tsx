@@ -21,7 +21,7 @@ export const SignUpForm: React.FC = () => {
         if (token) {
             dispatch(authActions.setToken(token));
             localStorage.setItem('token', token);
-            navigate('/task-meneger');
+            navigate('/task-manager');
         }
     });
 

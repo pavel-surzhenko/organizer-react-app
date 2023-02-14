@@ -1,4 +1,9 @@
+import { useState } from 'react';
+import ReactDatePicker from 'react-datepicker';
+
 export const TaskCardForm: React.FC = () => {
+    const [startDate, setStartDate] = useState(new Date());
+
     return (
         <div className='task-card'>
             <form>
@@ -18,7 +23,12 @@ export const TaskCardForm: React.FC = () => {
                         <span className='date'>
                             <div className='react-datepicker-wrapper'>
                                 <div className='react-datepicker__input-container'>
-                                    <input type='text' value='13 jun 2023' />
+                                    <ReactDatePicker
+                                        minDate={startDate}
+                                        selected={startDate}
+                                        onChange={(date: Date) => setStartDate(date)}
+                                        dateFormat='d MMM, yyyy'
+                                    />
                                 </div>
                             </div>
                         </span>
@@ -55,7 +65,7 @@ export const TaskCardForm: React.FC = () => {
                         <span
                             className='tag'
                             style={{
-                                color: 'rgb(254, 77, 151);',
+                                color: 'rgb(254, 77, 151)',
                                 backgroundColor: 'rgb(255, 244, 249)',
                             }}
                         >
@@ -64,7 +74,7 @@ export const TaskCardForm: React.FC = () => {
                         <span
                             className='tag'
                             style={{
-                                color: 'rgb(77, 124, 254);',
+                                color: 'rgb(77, 124, 254)',
                                 backgroundColor: 'rgb(240, 243, 251)',
                             }}
                         >
