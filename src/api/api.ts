@@ -38,6 +38,15 @@ export const api = Object.freeze({
         }
     },
     tasks: {
+        async getTasks(): Promise<ITask[]> {
+            const { data } = await axios.get<AxiosResponse<ITask[]>>(TASKS_URL, {
+                headers: {
+                    Authorization: `Bearer ${api.token}`
+                }
+            })            
+
+            return data?.data
+        }
     }
 });
 
@@ -51,4 +60,18 @@ export interface ISignUpWithToken {
 
 export interface IUpdatePassword {
     data: string;
+}
+
+export interface ITask {
+    id: string
+    completed: boolean,
+    title: string,
+    description: string,
+    deadline: string,
+    tag: {
+        id: string,
+        name: string,
+        color: string,
+        bg: string,
+    }
 }
