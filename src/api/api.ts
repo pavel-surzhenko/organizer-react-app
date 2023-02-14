@@ -1,5 +1,6 @@
 // Core
 import axios, { AxiosResponse } from 'axios';
+import { ILoginFormShape } from '../components/Login/config';
 import { ISignUp } from '../components/SignUp/config';
 import { TASKS_URL, AUTH_URL } from './config';
 
@@ -22,6 +23,19 @@ export const api = Object.freeze({
 
             return data;
         },
+
+        async login(credentials: string): Promise<string> {
+            const { data } = await axios.get<ILoginFormShape, AxiosResponse<ILogin>>(
+                `${AUTH_URL}/login`,
+                {
+                    headers: {
+                        Authorization: `Basic ${credentials}`,
+                    },
+                }
+            )
+
+            return data.data;
+        }
     },
     tasks: {
     }
