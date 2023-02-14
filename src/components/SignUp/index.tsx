@@ -1,10 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { ISignUpFormShape, schema } from './config';
 import { api } from '../../api';
+import { authActions } from '../../lib/redux/actions';
 
 export const SignUpForm: React.FC = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const form = useForm<ISignUpFormShape>({
         mode: 'onTouched',
         resolver: yupResolver(schema),
@@ -12,8 +17,12 @@ export const SignUpForm: React.FC = () => {
 
     const onSubmit = form.handleSubmit(async (data: ISignUpFormShape) => {
         const { confirmPassword, ...newUser } = data;
-        const { data: token } = await api.auth.signup(newUser);        
-        localStorage.setItem('token', token);
+        const { data: token } = await api.auth.signup(newUser);
+        if (token) {
+            dispatch(authActions.setToken(token));
+            localStorage.setItem('token', token);
+            navigate('/task-meneger');
+        }
     });
 
     return (
