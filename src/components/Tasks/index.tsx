@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ITask } from '../../api';
 import { taskActions } from '../../lib/redux/actions';
 import { getTasks } from '../../lib/redux/selectors';
 import { Task } from '../Task';
@@ -18,8 +19,10 @@ export const Tasks: React.FC = () => {
     }, [])
 
     const tasks = useSelector(getTasks);
-    console.log(tasks);
-    
+
+    const taskJSX = tasks.map((task: ITask) => {
+        return <Task key={task.id} {...task} />
+    })
 
 
     return (
@@ -30,7 +33,7 @@ export const Tasks: React.FC = () => {
             </div>
             <div className='wrap'>
                 <div className='list'>
-                    <div className='tasks'><Task /></div>
+                    <div className='tasks'>{ taskJSX }</div>
                 </div>
                 {open && <TaskCardForm />}
             </div>

@@ -1,4 +1,9 @@
-export const Task: React.FC = () => {
+import { ITask }  from '../../api'
+
+export const Task: React.FC<IPropTypes> = (props) => {
+    console.log(props);
+    
+
     return (
         <div className='task'>
             <span className='title'>First task</span>
@@ -9,3 +14,5 @@ export const Task: React.FC = () => {
         </div>
     );
 };
+
+interface IPropTypes extends ITask {}
