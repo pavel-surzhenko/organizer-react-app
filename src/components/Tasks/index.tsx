@@ -14,16 +14,15 @@ export const Tasks: React.FC = () => {
         setOpen(true);
     }
 
+    const tasks = useSelector(getTasks);    
+
     useEffect(()=> {
         dispatch(taskActions.fetchTaskAsync())
     }, [])
 
-    const tasks = useSelector(getTasks);
-
     const taskJSX = tasks.map((task: ITask) => {
         return <Task key={task.id} {...task} />
     })
-
 
     return (
         <>
@@ -32,7 +31,7 @@ export const Tasks: React.FC = () => {
                 <button onClick={handleClick} className='button-create-task'>New Task</button>
             </div>
             <div className='wrap'>
-                <div className='list'>
+                <div className={tasks.length ? 'list': 'list empty'}>
                     <div className='tasks'>{ taskJSX }</div>
                 </div>
                 {open && <TaskCardForm />}

@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ILoginFormShape } from '../components/Login/config';
 import { ISignUp } from '../components/SignUp/config';
-import { TASKS_URL, AUTH_URL } from './config';
+import { TASKS_URL, AUTH_URL, TAGS_URL } from './config';
 
 
 
@@ -47,6 +47,13 @@ export const api = Object.freeze({
 
             return data?.data
         }
+    },
+    tags: {
+        async getTags():Promise<ITag[]>{
+            const {data} = await axios.get<ITag[]>(TAGS_URL)                        
+
+            return data
+        }
     }
 });
 
@@ -64,14 +71,16 @@ export interface IUpdatePassword {
 
 export interface ITask {
     id: string
-    completed: boolean,
+    completed?: boolean,
     title: string,
     description: string,
     deadline: string,
-    tag: {
-        id: string,
-        name: string,
-        color: string,
-        bg: string,
-    }
+    tag: ITag,
+}
+
+export interface ITag {
+    id: string,
+    name: string,
+    color: string,
+    bg: string,
 }

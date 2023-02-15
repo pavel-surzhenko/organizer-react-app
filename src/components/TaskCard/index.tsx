@@ -4,6 +4,7 @@ import ReactDatePicker from 'react-datepicker';
 export const TaskCardForm: React.FC = () => {
     const [startDate, setStartDate] = useState(new Date());
 
+
     return (
         <div className='task-card'>
             <form>
@@ -26,7 +27,9 @@ export const TaskCardForm: React.FC = () => {
                                     <ReactDatePicker
                                         minDate={startDate}
                                         selected={startDate}
-                                        onChange={(date: Date) => setStartDate(date)}
+                                        onChange={(date: Date) =>
+                                            setStartDate(date)
+                                        }
                                         dateFormat='d MMM, yyyy'
                                     />
                                 </div>
@@ -54,7 +57,7 @@ export const TaskCardForm: React.FC = () => {
                             Sketch
                         </span>
                         <span
-                            className='tag selected'
+                            className='tag'
                             style={{
                                 color: 'rgb(109, 210, 48)',
                                 backgroundColor: 'rgb(245, 253, 240)',
