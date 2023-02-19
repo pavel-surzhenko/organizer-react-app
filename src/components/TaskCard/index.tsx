@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker';
+import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITag } from '../../api';
 import { tagsActions } from '../../lib/redux/actions';
 import { getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
+import { INewTask, schema } from './config';
 
 export const TaskCardForm: React.FC = () => {
-    const [startDate, setStartDate] = useState(new Date());
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -20,9 +22,22 @@ export const TaskCardForm: React.FC = () => {
         return <Tag key={task.id} {...task} />;
     });
 
+    const form = useForm<INewTask>({
+        mode: 'onTouched',
+        resolver: yupResolver(schema),
+    });
+
+    const onSubmit = form.handleSubmit((data) => {
+        console.log(data);
+        // console.log(data.deadline.toJSON())
+        // data.deadline = data.deadline.toJSON()
+        console.log(data);
+        
+    });
+
     return (
         <div className='task-card'>
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className='head'></div>
                 <div className='content'>
                     <label className='label'>
@@ -31,7 +46,7 @@ export const TaskCardForm: React.FC = () => {
                             type='text'
                             className='title'
                             placeholder='Do homeworks'
-                            name='title'
+                            {...form.register('title')}
                         />
                     </label>
                     <div className='deadline'>
@@ -39,13 +54,20 @@ export const TaskCardForm: React.FC = () => {
                         <span className='date'>
                             <div className='react-datepicker-wrapper'>
                                 <div className='react-datepicker__input-container'>
-                                    <ReactDatePicker
-                                        minDate={startDate}
-                                        selected={startDate}
-                                        onChange={(date: Date) =>
-                                            setStartDate(date)
-                                        }
-                                        dateFormat='d MMM, yyyy'
+                                    <Controller
+                                        name={'deadline'}
+                                        control={form.control}
+                                        defaultValue={new Date()}
+                                        render={({
+                                            field: { onChange, value },
+                                        }) => (
+                                            <ReactDatePicker
+                                                minDate={new Date()}
+                                                selected={value || new Date()}
+                                                onChange={onChange}
+                                                dateFormat='d MMM, yyyy'
+                                            />
+                                        )}
                                     />
                                 </div>
                             </div>
@@ -55,16 +77,20 @@ export const TaskCardForm: React.FC = () => {
                         <label className='label'>
                             Description
                             <textarea
-                                name='description'
                                 className='text'
                                 placeholder='Do homework before the weekend'
+                                {...form.register('description')}
                             ></textarea>
                         </label>
                     </div>
                     <div className='tags'>{tagsJSX}</div>
                     <div className='errors'></div>
                     <div className='form-controls'>
-                        <button className='button-reset-task' type='reset'>
+                        <button
+                            className='button-reset-task'
+                            type='reset'
+                            onClick={() => form.reset()}
+                        >
                             Reset
                         </button>
                         <button className='button-save-task' type='submit'>
