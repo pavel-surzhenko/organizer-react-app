@@ -4,6 +4,13 @@ import { taskTypes } from "../types"
 import { authActions } from "./auth"
 
 export const taskActions = Object.freeze({
+    setTaskId: (taskId: string) => {
+        return {
+            type: taskTypes.SET_SELECTED_TASK,
+            payload: taskId
+        }
+    },
+
     startFetching: () => {
         return {
             type: taskTypes.START_FETCHING,

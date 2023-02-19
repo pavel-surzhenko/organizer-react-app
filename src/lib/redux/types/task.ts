@@ -2,4 +2,5 @@ export const taskTypes = Object.freeze({
     FETCH_TASKS: 'FETCH_TASKS',
     START_FETCHING: 'START_FETCHING',
     STOP_FETCHING: 'STOP_FETCHING',
+    SET_SELECTED_TASK: 'SET_SELECTED_TASK',
 })

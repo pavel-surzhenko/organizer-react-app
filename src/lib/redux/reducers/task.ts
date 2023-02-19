@@ -2,6 +2,7 @@ import { AnyAction } from "redux"
 import { taskTypes } from "../types"
 
 const initialState = {
+    id: '',
     tasks: [],
     isFetching: false,
 }
@@ -27,6 +28,13 @@ export const taskReducer = (state = initialState, action: AnyAction) => {
                 ...state,
                 isFetching: true,
                 tasks: action?.payload
+            }
+        }
+
+        case taskTypes.SET_SELECTED_TASK: {
+            return {
+                ...state,
+                id: action?.payload
             }
         }
 
