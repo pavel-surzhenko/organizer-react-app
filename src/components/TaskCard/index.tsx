@@ -1,9 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
+import { useDispatch, useSelector } from 'react-redux';
+import { ITag } from '../../api';
+import { tagsActions } from '../../lib/redux/actions';
+import { getTags } from '../../lib/redux/selectors';
+import { Tag } from '../Tag';
 
 export const TaskCardForm: React.FC = () => {
     const [startDate, setStartDate] = useState(new Date());
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(tagsActions.fetchTaskAsync());
+    }, []);
+
+    const tags = useSelector(getTags);
+
+    const tagsJSX = tags.map((task: ITag) => {
+        return <Tag key={task.id} {...task} />;
+    });
 
     return (
         <div className='task-card'>
@@ -46,53 +61,7 @@ export const TaskCardForm: React.FC = () => {
                             ></textarea>
                         </label>
                     </div>
-                    <div className='tags'>
-                        <span
-                            className='tag'
-                            style={{
-                                color: 'rgb(255, 171, 43)',
-                                backgroundColor: 'rgb(255, 250, 240)',
-                            }}
-                        >
-                            Sketch
-                        </span>
-                        <span
-                            className='tag'
-                            style={{
-                                color: 'rgb(109, 210, 48)',
-                                backgroundColor: 'rgb(245, 253, 240)',
-                            }}
-                        >
-                            Spotify
-                        </span>
-                        <span
-                            className='tag'
-                            style={{
-                                color: 'rgb(254, 77, 151)',
-                                backgroundColor: 'rgb(255, 244, 249)',
-                            }}
-                        >
-                            Dribble
-                        </span>
-                        <span
-                            className='tag'
-                            style={{
-                                color: 'rgb(77, 124, 254)',
-                                backgroundColor: 'rgb(240, 243, 251)',
-                            }}
-                        >
-                            Behance
-                        </span>
-                        <span
-                            className='tag'
-                            style={{
-                                color: 'rgb(134, 134, 134)',
-                                backgroundColor: 'rgb(236, 236, 236)',
-                            }}
-                        >
-                            UX
-                        </span>
-                    </div>
+                    <div className='tags'>{tagsJSX}</div>
                     <div className='errors'></div>
                     <div className='form-controls'>
                         <button className='button-reset-task' type='reset'>

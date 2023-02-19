@@ -8,6 +8,8 @@ export const Tag: React.FC<ITag> = (props) => {
                 color: `${props?.color}`,
                 backgroundColor: `${props?.bg}`,
             }}
-        >{props.name}</span>
+        >
+            {props.name}
+        </span>
     );
 };
