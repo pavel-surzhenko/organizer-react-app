@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITask } from '../../api';
 import { taskActions } from '../../lib/redux/actions';
-import { getTasks } from '../../lib/redux/selectors';
+import { getSelectedTask, getTasks } from '../../lib/redux/selectors';
 import { Task } from '../Task';
 import { TaskCardForm } from '../TaskCard';
 
 export const Tasks: React.FC = () => {
     const dispatch = useDispatch();
 
-    const [open, setOpen] = useState(false)
     const handleClick = () => {
-        setOpen(true);
+        dispatch(taskActions.setTaskId('new'))
     }
 
-    const tasks = useSelector(getTasks);    
+    const tasks = useSelector(getTasks);
+    const selectedTaskId = useSelector(getSelectedTask);
+    const selectedTask = tasks.find((task) => task.id === selectedTaskId)      
 
     useEffect(()=> {
         dispatch(taskActions.fetchTaskAsync())
@@ -34,7 +35,7 @@ export const Tasks: React.FC = () => {
                 <div className={tasks.length ? 'list': 'list empty'}>
                     <div className='tasks'>{ taskJSX }</div>
                 </div>
-                {open && <TaskCardForm />}
+                {selectedTaskId === 'new' && <TaskCardForm /> || selectedTaskId && <TaskCardForm {...selectedTask}/>}
             </div>
         </>
     );

@@ -1,6 +1,7 @@
+import { ITask } from '../../../api';
 import { RootState } from '../init/store';
 
-export const getTasks = (state: RootState) => {
+export const getTasks = (state: RootState): ITask[] => {
     return state.task.tasks
 };
 

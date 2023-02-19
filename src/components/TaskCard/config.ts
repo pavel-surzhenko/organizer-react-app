@@ -5,8 +5,7 @@ export const schema: yup.SchemaOf<INewTask> = yup.object().shape({
         .string()
         .required('*333'),
     deadline: yup
-        .date()
-        .required('*'),
+        .date(),
     description: yup
         .string()
         .required('*'),
@@ -16,7 +15,7 @@ export const schema: yup.SchemaOf<INewTask> = yup.object().shape({
 
 export interface INewTask {
     title: string
-    deadline: Date
+    deadline?: Date
     description: string
     tag?: string
 }

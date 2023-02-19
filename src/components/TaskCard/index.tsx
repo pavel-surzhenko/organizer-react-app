@@ -1,17 +1,18 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { api, ITag } from '../../api';
 import { tagsActions, taskActions } from '../../lib/redux/actions';
-import { getTagId, getTags } from '../../lib/redux/selectors';
+import { getSelectedTask, getTagId, getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
 import { INewTask, schema } from './config';
 
-export const TaskCardForm: React.FC = () => {
+export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
     const dispatch = useDispatch();
     const selectedTagId = useSelector(getTagId);
+    const isNew = useSelector(getSelectedTask) === 'new';
 
     useEffect(() => {
         dispatch(tagsActions.fetchTagsAsync());
@@ -28,17 +29,28 @@ export const TaskCardForm: React.FC = () => {
         resolver: yupResolver(schema),
     });
 
+    const [selectedDate, setSelectedDate] = useState(
+        props?.deadline ? new Date(props.deadline) : new Date()
+    );
+
+    useEffect(() => {
+        form.reset();
+        setSelectedDate(
+            props?.deadline ? new Date(props.deadline) : new Date()
+        );
+    }, [props]);
+
     const onSubmit = form.handleSubmit(async (data) => {
         const taskData = {
-            'completed': false,
-            'title': data.title,
-            'description': data.description,
-            'deadline': data.deadline.toJSON(),
-            'tag': selectedTagId,
+            completed: false,
+            title: data.title,
+            description: data.description,
+            deadline: selectedDate.toJSON(),
+            tag: selectedTagId,
         };
-        await api.tasks.create(taskData)
-        dispatch(taskActions.fetchTaskAsync())
-        form.reset()
+        await api.tasks.create(taskData);
+        dispatch(taskActions.fetchTaskAsync());
+        form.reset();
     });
 
     return (
@@ -49,7 +61,7 @@ export const TaskCardForm: React.FC = () => {
                     <label className='label'>
                         Tasks
                         <input
-                            defaultValue={3}
+                            defaultValue={`${isNew ? '' : props.title}`}
                             type='text'
                             className='title'
                             placeholder='Do homeworks'
@@ -62,16 +74,18 @@ export const TaskCardForm: React.FC = () => {
                             <div className='react-datepicker-wrapper'>
                                 <div className='react-datepicker__input-container'>
                                     <Controller
-                                        name={'deadline'}
+                                        name='deadline'
                                         control={form.control}
-                                        defaultValue={new Date()}
-                                        render={({
-                                            field: { onChange, value },
-                                        }) => (
+                                        defaultValue={selectedDate}
+                                        render={({ field }) => (
                                             <ReactDatePicker
                                                 minDate={new Date()}
-                                                selected={value || new Date()}
-                                                onChange={onChange}
+                                                selected={selectedDate}
+                                                onChange={(date: Date) =>
+                                                    field.onChange(
+                                                        setSelectedDate(date)
+                                                    )
+                                                }
                                                 dateFormat='d MMM, yyyy'
                                             />
                                         )}
@@ -84,6 +98,9 @@ export const TaskCardForm: React.FC = () => {
                         <label className='label'>
                             Description
                             <textarea
+                                defaultValue={`${
+                                    isNew ? '' : props.description
+                                }`}
                                 className='text'
                                 placeholder='Do homework before the weekend'
                                 {...form.register('description')}
@@ -109,3 +126,12 @@ export const TaskCardForm: React.FC = () => {
         </div>
     );
 };
+
+interface ITaskSeleсted {
+    id?: string;
+    completed?: boolean;
+    title?: string;
+    description?: string;
+    deadline?: string;
+    tag?: ITag;
+}
