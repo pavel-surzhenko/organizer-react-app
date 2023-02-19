@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { ITag } from '../../api';
-import { tagsActions } from '../../lib/redux/actions';
+import { api, ITag } from '../../api';
+import { tagsActions, taskActions } from '../../lib/redux/actions';
 import { getTagId, getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
 import { INewTask, schema } from './config';
@@ -12,7 +12,6 @@ import { INewTask, schema } from './config';
 export const TaskCardForm: React.FC = () => {
     const dispatch = useDispatch();
     const selectedTagId = useSelector(getTagId);
-    console.log(selectedTagId);
 
     useEffect(() => {
         dispatch(tagsActions.fetchTagsAsync());
@@ -29,12 +28,17 @@ export const TaskCardForm: React.FC = () => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = form.handleSubmit((data) => {
-        console.log(data);
-        // console.log(data.deadline.toJSON())
-        // data.deadline = data.deadline.toJSON()
-        console.log(data);
-        
+    const onSubmit = form.handleSubmit(async (data) => {
+        const taskData = {
+            'completed': false,
+            'title': data.title,
+            'description': data.description,
+            'deadline': data.deadline.toJSON(),
+            'tag': selectedTagId,
+        };
+        await api.tasks.create(taskData)
+        dispatch(taskActions.fetchTaskAsync())
+        form.reset()
     });
 
     return (
@@ -45,6 +49,7 @@ export const TaskCardForm: React.FC = () => {
                     <label className='label'>
                         Tasks
                         <input
+                            defaultValue={3}
                             type='text'
                             className='title'
                             placeholder='Do homeworks'

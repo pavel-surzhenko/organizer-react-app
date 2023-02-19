@@ -43,14 +43,32 @@ export const api = Object.freeze({
                 headers: {
                     Authorization: `Bearer ${api.token}`
                 }
-            })            
+            })
 
             return data?.data
+        },
+        async create(task: ITaskCreated) {
+            const { data } = await axios.post(TASKS_URL,
+                task,
+                {
+                    headers: {
+                        Authorization: `Bearer ${api.token}`,
+                    },
+                });
+
+            return data
+        },
+        delete(taskId:string) {
+            return axios.delete(`${TASKS_URL}/${taskId}`,{
+                headers: {
+                    Authorization: `Bearer ${api.token}`
+                }
+            })
         }
     },
     tags: {
-        async getTags():Promise<ITag[]>{
-            const {data} = await axios.get<ITag[]>(TAGS_URL)                        
+        async getTags(): Promise<ITag[]> {
+            const { data } = await axios.get<ITag[]>(TAGS_URL)
 
             return data
         }
@@ -83,4 +101,11 @@ export interface ITag {
     name: string,
     color: string,
     bg: string,
+}
+export interface ITaskCreated {
+    completed: boolean,
+    title: string,
+    description: string,
+    deadline: string,
+    tag: string
 }
