@@ -2,6 +2,7 @@ import { AnyAction } from "redux"
 import { tagTypes } from "../types"
 
 const initialState = {
+    tagId: '',
     tags: [],
     isFetching: false,
 }
@@ -27,6 +28,13 @@ export const tagReducer = (state = initialState, action: AnyAction) => {
                 ...state,
                 isFetching: true,
                 tags: action?.payload
+            }
+        }
+
+        case tagTypes.SET_SELECTED_TAG_ID: {
+            return {
+                ...state,
+                tagId: action?.payload
             }
         }
 

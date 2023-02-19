@@ -16,23 +16,30 @@ export const tagsActions = Object.freeze({
         }
     },
 
-    fetchTask: (tags: ITag[]) => {
+    fetchTags: (tags: ITag[]) => {
         return {
             type: tagTypes.FETCH_TASKS,
             payload: tags,
         }
     },
 
-    fetchTaskAsync: (): AppThunk => async (dispatch) => {
+    fetchTagsAsync: (): AppThunk => async (dispatch) => {
         try {
             dispatch(tagsActions.startFetching())
             const tags = await api.tags.getTags()
-            dispatch(tagsActions.fetchTask(tags))
+            dispatch(tagsActions.fetchTags(tags))
         } catch (error: any) {
             const { message } = error;
             dispatch(authActions.setError(message))
         } finally {
             dispatch(tagsActions.stopFetching());
         }
-    }
+    },
+
+    setTagId: (tagId: string) => {
+        return {
+            type: tagTypes.SET_SELECTED_TAG_ID,
+            payload: tagId
+        }
+    },
 })

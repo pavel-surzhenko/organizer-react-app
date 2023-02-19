@@ -5,15 +5,17 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITag } from '../../api';
 import { tagsActions } from '../../lib/redux/actions';
-import { getTags } from '../../lib/redux/selectors';
+import { getTagId, getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
 import { INewTask, schema } from './config';
 
 export const TaskCardForm: React.FC = () => {
     const dispatch = useDispatch();
+    const selectedTagId = useSelector(getTagId);
+    console.log(selectedTagId);
 
     useEffect(() => {
-        dispatch(tagsActions.fetchTaskAsync());
+        dispatch(tagsActions.fetchTagsAsync());
     }, []);
 
     const tags = useSelector(getTags);
