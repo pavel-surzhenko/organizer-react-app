@@ -94,6 +94,7 @@ export const SignUpForm: React.FC = () => {
                         type='submit'
                         className='button-login'
                         value='Register'
+                        disabled={!form.formState.isValid}
                     />
                 </fieldset>
                 <p>

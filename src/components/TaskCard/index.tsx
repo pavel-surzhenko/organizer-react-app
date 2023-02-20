@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
@@ -14,19 +15,20 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
     const selectedTagId = useSelector(getTagId);
     const isNew = useSelector(getSelectedTask) === 'new';
 
+    const form = useForm<INewTask>({
+        mode: 'onTouched',
+        resolver: yupResolver(schema),
+    });
+
     useEffect(() => {
         dispatch(tagsActions.fetchTagsAsync());
+        form.setFocus('title')
     }, []);
 
     const tags = useSelector(getTags);
 
     const tagsJSX = tags.map((task: ITag) => {
         return <Tag key={task.id} {...task} />;
-    });
-
-    const form = useForm<INewTask>({
-        mode: 'onTouched',
-        resolver: yupResolver(schema),
     });
 
     const [selectedDate, setSelectedDate] = useState(
@@ -52,7 +54,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
         isNew
             ? await api.tasks.create(taskData)
             : await api.tasks.update(taskData, props?.id);
-        dispatch(taskActions.setTaskId(''))
+        dispatch(taskActions.setTaskId(''));
         dispatch(taskActions.fetchTaskAsync());
         form.reset();
     });
@@ -63,26 +65,26 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             props?.deadline ? new Date(props.deadline) : new Date()
         );
     };
-    
+
     const removeTask = async () => {
         await api.tasks.delete(props.id);
         dispatch(taskActions.setTaskId(''));
         dispatch(taskActions.fetchTaskAsync());
     };
 
-    const completeTask = async() => {
-        const dataT = {
+    const completeTask = async () => {
+        const data = {
             completed: true,
             title: form.watch('title'),
             description: form.watch('description'),
             deadline: selectedDate.toJSON(),
             tag: selectedTagId,
-        }
-        
-        await api.tasks.update(dataT, props?.id);
+        };
+
+        await api.tasks.update(data, props?.id);
         dispatch(taskActions.setTaskId(''));
         dispatch(taskActions.fetchTaskAsync());
-    }
+    };
 
     return (
         <div className='task-card'>
@@ -92,7 +94,11 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
                         ''
                     ) : (
                         <>
-                            <button type='button' onClick={completeTask} className='button-complete-task'>
+                            <button
+                                type='button'
+                                onClick={completeTask}
+                                className='button-complete-task'
+                            >
                                 to complete
                             </button>
                             <div
@@ -153,7 +159,22 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
                         </label>
                     </div>
                     <div className='tags'>{tagsJSX}</div>
-                    <div className='errors'></div>
+                    <div className='errors'>
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='title'
+                            render={({ message }) => (
+                                <p className='errorMessage'>{message}</p>
+                            )}
+                        />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='description'
+                            render={({ message }) => (
+                                <p className='errorMessage'>{message}</p>
+                            )}
+                        />
+                    </div>
                     <div className='form-controls'>
                         <button
                             className='button-reset-task'
@@ -162,7 +183,11 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
                         >
                             Reset
                         </button>
-                        <button className='button-save-task' type='submit'>
+                        <button
+                            className='button-save-task'
+                            type='submit'
+                            disabled={!form.formState.isValid || !selectedTagId}
+                        >
                             Save
                         </button>
                     </div>

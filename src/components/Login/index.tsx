@@ -65,6 +65,7 @@ export const LoginForm: React.FC = () => {
                         type='submit'
                         className='button-login'
                         value='log in'
+                        disabled={!form.formState.isValid}
                     />
                 </fieldset>
                 <p>
