@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 import { ILoginFormShape } from '../components/Login/config';
 import { ISignUp } from '../components/SignUp/config';
 import { TASKS_URL, AUTH_URL, TAGS_URL } from './config';
+import { IErrorMessage, ITag, ITask, ITaskCreated, IToken } from './types';
 
 
 export const api = Object.freeze({
@@ -24,7 +25,7 @@ export const api = Object.freeze({
 
                 return data;
             } catch (error: any) {
-                return error.response.data || { error: 'Unknown error occurred' }
+                return error.response.data || { message: 'Unknown error occurred' }
             }
 
         },
@@ -42,7 +43,7 @@ export const api = Object.freeze({
 
                 return data;
             } catch (error: any) {
-                return error.response.data || { error: 'Unknown error occurred' }
+                return error.response.data || { message: 'Unknown error occurred' }
             }
 
         },
@@ -57,7 +58,7 @@ export const api = Object.freeze({
                         },
                     })
             } catch (error: any) {
-                return error.response.data || { error: 'Unknown error occurred' }
+                return error.response.data || { message: 'Unknown error occurred' }
             }
         }
     },
@@ -85,7 +86,7 @@ export const api = Object.freeze({
 
                 return data
             } catch (error: any) {
-                return error.response.data || { error: 'Unknown error occurred' }
+                return error.response.data || { message: 'Unknown error occurred' }
             }
 
         },
@@ -97,7 +98,7 @@ export const api = Object.freeze({
                     }
                 })
             } catch (error: any) {
-                return error.response.data || { error: 'Unknown error occurred' }
+                return error.response.data || { message: 'Unknown error occurred' }
             }
 
         },
@@ -114,7 +115,7 @@ export const api = Object.freeze({
 
                 return data
             } catch (error: any) {
-                return error.response.data || { error: 'Unknown error occurred' }
+                return error.response.data || { message: 'Unknown error occurred' }
             }
 
         },
@@ -127,36 +128,3 @@ export const api = Object.freeze({
         }
     }
 });
-
-export interface IToken {
-    data: string;
-}
-
-export interface IErrorMessage {
-    error: string
-    message: string
-    statusCode: string
-}
-
-export interface ITask {
-    id: string
-    completed?: boolean,
-    title: string,
-    description: string,
-    deadline: string,
-    tag: ITag,
-}
-
-export interface ITag {
-    id: string,
-    name: string,
-    color: string,
-    bg: string,
-}
-export interface ITaskCreated {
-    completed: boolean,
-    title: string,
-    description: string,
-    deadline: string,
-    tag: string
-}

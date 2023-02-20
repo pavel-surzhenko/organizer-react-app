@@ -60,9 +60,12 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
         if ('data' in token) {
             dispatch(taskActions.setTaskId(''));
             dispatch(taskActions.fetchTaskAsync());
-            toast.success(`${isNew ? 'Task created' : 'Task updated'}`, toastOptions);
+            toast.success(
+                `${isNew ? 'Task created' : 'Task updated'}`,
+                toastOptions
+            );
             form.reset();
-        } else {
+        } else if('message' in token) {
             dispatch(authActions.setError(token.message));
         }
     });
@@ -101,7 +104,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             dispatch(taskActions.setTaskId(''));
             dispatch(taskActions.fetchTaskAsync());
             toast.info('Task completed', toastOptions);
-        } else {
+        } else if('message' in token){
             dispatch(authActions.setError(token.message));
         }
     };
