@@ -58,12 +58,21 @@ export const api = Object.freeze({
 
             return data
         },
-        delete(taskId:string) {
-            return axios.delete(`${TASKS_URL}/${taskId}`,{
+        delete(taskId: string) {
+            return axios.delete(`${TASKS_URL}/${taskId}`, {
                 headers: {
                     Authorization: `Bearer ${api.token}`
                 }
             })
+        },
+        async update(task: ITaskCreated, id?: string) {
+            await axios.put(`${TASKS_URL}/${id}`,
+                task,
+                {
+                    headers: {
+                        Authorization: `Bearer ${api.token}`,
+                    },
+                });
         }
     },
     tags: {

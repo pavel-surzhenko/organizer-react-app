@@ -48,10 +48,19 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             deadline: selectedDate.toJSON(),
             tag: selectedTagId,
         };
-        await api.tasks.create(taskData);
+        isNew
+            ? await api.tasks.create(taskData)
+            : await api.tasks.update(taskData, props?.id);
         dispatch(taskActions.fetchTaskAsync());
         form.reset();
     });
+
+    const resetForm = () => {
+        form.reset();
+        setSelectedDate(
+            props?.deadline ? new Date(props.deadline) : new Date()
+        );
+    };
 
     return (
         <div className='task-card'>
@@ -113,7 +122,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
                         <button
                             className='button-reset-task'
                             type='reset'
-                            onClick={() => form.reset()}
+                            onClick={resetForm}
                         >
                             Reset
                         </button>

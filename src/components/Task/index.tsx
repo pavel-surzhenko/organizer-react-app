@@ -1,16 +1,17 @@
 import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { ITask } from '../../api';
-import { taskActions } from '../../lib/redux/actions';
+import { tagsActions, taskActions } from '../../lib/redux/actions';
 import { Tag } from '../Tag';
 
 export const Task: React.FC<IPropTypes> = (props) => {
     const dispatch = useDispatch();
     const { title, deadline, tag, completed, id } = props;
-    const date = format(new Date(deadline), 'd MMM, yyyy');
+    const date = format(new Date(deadline), 'd MMM, yyyy');    
 
     const handleClick = () => {
         dispatch(taskActions.setTaskId(id));
+        dispatch(tagsActions.setTagId(tag.id))
     };
 
     return (

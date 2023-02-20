@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ITask } from '../../api';
-import { taskActions } from '../../lib/redux/actions';
+import { tagsActions, taskActions } from '../../lib/redux/actions';
 import { getSelectedTask, getTasks } from '../../lib/redux/selectors';
 import { Task } from '../Task';
 import { TaskCardForm } from '../TaskCard';
@@ -11,6 +11,7 @@ export const Tasks: React.FC = () => {
 
     const handleClick = () => {
         dispatch(taskActions.setTaskId('new'))
+        dispatch(tagsActions.setTagId(''))
     }
 
     const tasks = useSelector(getTasks);
