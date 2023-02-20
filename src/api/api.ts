@@ -58,8 +58,8 @@ export const api = Object.freeze({
 
             return data
         },
-        delete(taskId: string) {
-            return axios.delete(`${TASKS_URL}/${taskId}`, {
+        async delete(taskId?: string) {
+            await axios.delete(`${TASKS_URL}/${taskId}`, {
                 headers: {
                     Authorization: `Bearer ${api.token}`
                 }
@@ -73,7 +73,7 @@ export const api = Object.freeze({
                         Authorization: `Bearer ${api.token}`,
                     },
                 });
-        }
+        },
     },
     tags: {
         async getTags(): Promise<ITag[]> {

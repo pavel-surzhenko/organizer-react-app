@@ -48,9 +48,11 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             deadline: selectedDate.toJSON(),
             tag: selectedTagId,
         };
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         isNew
             ? await api.tasks.create(taskData)
             : await api.tasks.update(taskData, props?.id);
+        dispatch(taskActions.setTaskId(''))
         dispatch(taskActions.fetchTaskAsync());
         form.reset();
     });
@@ -61,11 +63,44 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             props?.deadline ? new Date(props.deadline) : new Date()
         );
     };
+    
+    const removeTask = async () => {
+        await api.tasks.delete(props.id);
+        dispatch(taskActions.setTaskId(''));
+        dispatch(taskActions.fetchTaskAsync());
+    };
+
+    const completeTask = async() => {
+        const dataT = {
+            completed: true,
+            title: form.watch('title'),
+            description: form.watch('description'),
+            deadline: selectedDate.toJSON(),
+            tag: selectedTagId,
+        }
+        
+        await api.tasks.update(dataT, props?.id);
+        dispatch(taskActions.fetchTaskAsync());
+    }
 
     return (
         <div className='task-card'>
             <form onSubmit={onSubmit}>
-                <div className='head'></div>
+                <div className='head'>
+                    {isNew ? (
+                        ''
+                    ) : (
+                        <>
+                            <button type='button' onClick={completeTask} className='button-complete-task'>
+                                to complete
+                            </button>
+                            <div
+                                onClick={removeTask}
+                                className='button-remove-task'
+                            ></div>
+                        </>
+                    )}
+                </div>
                 <div className='content'>
                     <label className='label'>
                         Tasks
