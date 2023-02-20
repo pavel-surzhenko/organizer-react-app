@@ -6,10 +6,12 @@ import { Slide, ToastContainer } from 'react-toastify';
 // Components
 import { Navigation } from './components';
 import { useErrorMessage } from './hooks/useErrorMessage';
+import { useToken } from './hooks/useToken';
 import { LoginPage, SignUpPage, TasksPage } from './pages';
 
 export const App: FC = () => {
     useErrorMessage();
+    useToken()
 
     return (
         <>

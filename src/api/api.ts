@@ -20,12 +20,12 @@ export const api = Object.freeze({
                             'Content-type': 'application/json',
                         },
                     });
-    
+
                 return data;
             } catch (error: any) {
                 return error.response.data
             }
-            
+
         },
 
         async login(credentials: string): Promise<IToken | IErrorMessage> {
@@ -44,6 +44,20 @@ export const api = Object.freeze({
                 return error.response.data
             }
 
+        },
+
+        async logout() {
+            try {
+                await axios.get(
+                    `${AUTH_URL}/logout`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${api.token}`,
+                        },
+                    })
+            } catch (error: any) {
+                return error.response.data
+            }
         }
     },
     tasks: {

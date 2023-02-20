@@ -12,7 +12,7 @@ export const LoginForm: React.FC = () => {
     const navigate = useNavigate();
 
     const form = useForm<ILoginFormShape>({
-        mode: 'onTouched',
+        mode: 'all',
         resolver: yupResolver(schema),
     });
 
