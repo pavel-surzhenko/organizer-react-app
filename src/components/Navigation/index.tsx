@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { api } from '../../api';
 import { authActions } from '../../lib/redux/actions';
 
@@ -13,8 +14,9 @@ export const Navigation: React.FC = () => {
         if (error) {
             dispatch(authActions.setError(error.message));
         } else {
-            navigate('/login');
             localStorage.removeItem('token');
+            toast('See you soon');
+            navigate('/login');
         }
     };
 

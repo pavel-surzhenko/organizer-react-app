@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useLogin } from '../../hooks/useLogin';
 import { authActions } from '../../lib/redux/actions';
 import { ILoginFormShape, schema } from './config';
@@ -22,11 +23,14 @@ export const LoginForm: React.FC = () => {
         if ('data' in token) {
             dispatch(authActions.setToken(token.data));
             localStorage.setItem('token', token.data);
+            toast('Welcome');
             navigate('/task-manager');
         } else {
             dispatch(authActions.setError(token.message));
         }
     });
+
+    const isValid = () => !form.formState.isValid;
 
     return (
         <section className='sign-form'>
@@ -65,7 +69,7 @@ export const LoginForm: React.FC = () => {
                         type='submit'
                         className='button-login'
                         value='log in'
-                        disabled={!form.formState.isValid}
+                        disabled={isValid()}
                     />
                 </fieldset>
                 <p>

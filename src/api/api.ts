@@ -71,31 +71,50 @@ export const api = Object.freeze({
             return data?.data
         },
         async create(task: ITaskCreated) {
-            const { data } = await axios.post(TASKS_URL,
-                task,
-                {
-                    headers: {
-                        Authorization: `Bearer ${api.token}`,
-                    },
-                });
+            try {
+                const { data } = await axios.post(TASKS_URL,
+                    task,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${api.token}`,
+                        },
+                    });
 
-            return data
+                return data
+            } catch (error: any) {
+                return error.response.data
+            }
+
         },
         async delete(taskId?: string) {
-            await axios.delete(`${TASKS_URL}/${taskId}`, {
-                headers: {
-                    Authorization: `Bearer ${api.token}`
-                }
-            })
-        },
-        async update(task: ITaskCreated, id?: string): Promise<void> {
-            await axios.put(`${TASKS_URL}/${id}`,
-                task,
-                {
+            try{
+                const {data} = await axios.delete(`${TASKS_URL}/${taskId}`, {
                     headers: {
-                        Authorization: `Bearer ${api.token}`,
-                    },
-                });
+                        Authorization: `Bearer ${api.token}`
+                    }
+                })
+
+                return data
+            } catch (error: any) {
+                return error.response.data
+            }
+            
+        },
+        async update(task: ITaskCreated, id?: string) {
+            try {
+                const { data } = await axios.put(`${TASKS_URL}/${id}`,
+                    task,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${api.token}`,
+                        },
+                    });
+
+                return data
+            } catch (error: any) {
+                return error.response.data
+            }
+
         },
     },
     tags: {

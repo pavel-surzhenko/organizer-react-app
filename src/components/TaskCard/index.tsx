@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import ReactDatePicker from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { api, ITag } from '../../api';
-import { tagsActions, taskActions } from '../../lib/redux/actions';
+import { authActions, tagsActions, taskActions } from '../../lib/redux/actions';
 import { getSelectedTask, getTagId, getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
 import { INewTask, schema } from './config';
@@ -22,7 +23,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
 
     useEffect(() => {
         dispatch(tagsActions.fetchTagsAsync());
-        form.setFocus('title')
+        form.setFocus('title');
     }, []);
 
     const tags = useSelector(getTags);
@@ -50,13 +51,19 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             deadline: selectedDate.toJSON(),
             tag: selectedTagId,
         };
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        isNew
+
+        const token = isNew
             ? await api.tasks.create(taskData)
             : await api.tasks.update(taskData, props?.id);
-        dispatch(taskActions.setTaskId(''));
-        dispatch(taskActions.fetchTaskAsync());
-        form.reset();
+
+        if ('data' in token) {
+            dispatch(taskActions.setTaskId(''));
+            dispatch(taskActions.fetchTaskAsync());
+            toast(`${isNew ? 'Task created' : 'Task updated'}`);
+            form.reset();
+        } else {
+            dispatch(authActions.setError(token.message));
+        }
     });
 
     const resetForm = () => {
@@ -67,9 +74,15 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
     };
 
     const removeTask = async () => {
-        await api.tasks.delete(props.id);
-        dispatch(taskActions.setTaskId(''));
-        dispatch(taskActions.fetchTaskAsync());
+        const token = await api.tasks.delete(props.id);
+
+        if (token) {
+            dispatch(authActions.setError(token.message));
+        } else {
+            dispatch(taskActions.setTaskId(''));
+            dispatch(taskActions.fetchTaskAsync());
+            toast('Task deleted');
+        }
     };
 
     const completeTask = async () => {
@@ -81,9 +94,15 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
             tag: selectedTagId,
         };
 
-        await api.tasks.update(data, props?.id);
-        dispatch(taskActions.setTaskId(''));
-        dispatch(taskActions.fetchTaskAsync());
+        const token = await api.tasks.update(data, props?.id);
+
+        if ('data' in token) {
+            dispatch(taskActions.setTaskId(''));
+            dispatch(taskActions.fetchTaskAsync());
+            toast('Task completed');
+        } else {
+            dispatch(authActions.setError(token.message));
+        }
     };
 
     return (

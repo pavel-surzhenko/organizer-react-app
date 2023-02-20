@@ -80,13 +80,15 @@ export const SignUpForm: React.FC = () => {
                         <input
                             type='password'
                             placeholder='Confirm password'
-                            {...form.register('confirmPassword')}
+                            {...form.register('confirmPassword', { shouldUnregister: false })}
                         />
                         <ErrorMessage
                             errors={form.formState.errors}
                             name='confirmPassword'
                             render={() => (
-                                <span className='errorMessage'>{'passwords do not match'}</span>
+                                <span className='errorMessage'>
+                                    {'passwords do not match'}
+                                </span>
                             )}
                         />
                     </label>
@@ -94,7 +96,6 @@ export const SignUpForm: React.FC = () => {
                         type='submit'
                         className='button-login'
                         value='Register'
-                        disabled={!form.formState.isValid}
                     />
                 </fieldset>
                 <p>
