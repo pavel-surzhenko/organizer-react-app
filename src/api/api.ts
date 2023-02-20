@@ -9,6 +9,7 @@ export const api = Object.freeze({
     get token() {
         return localStorage.getItem('token');
     },
+
     auth: {
         async signup(userInfo: ISignUp): Promise<IToken | IErrorMessage> {
             try {
@@ -23,7 +24,7 @@ export const api = Object.freeze({
 
                 return data;
             } catch (error: any) {
-                return error.response.data
+                return error.response.data || { error: 'Unknown error occurred' }
             }
 
         },
@@ -41,12 +42,12 @@ export const api = Object.freeze({
 
                 return data;
             } catch (error: any) {
-                return error.response.data
+                return error.response.data || { error: 'Unknown error occurred' }
             }
 
         },
 
-        async logout() {
+        async logout(): Promise<void | IErrorMessage> {
             try {
                 await axios.get(
                     `${AUTH_URL}/logout`,
@@ -56,10 +57,11 @@ export const api = Object.freeze({
                         },
                     })
             } catch (error: any) {
-                return error.response.data
+                return error.response.data || { error: 'Unknown error occurred' }
             }
         }
     },
+
     tasks: {
         async getTasks(): Promise<ITask[]> {
             const { data } = await axios.get<AxiosResponse<ITask[]>>(TASKS_URL, {
@@ -70,9 +72,10 @@ export const api = Object.freeze({
 
             return data?.data
         },
-        async create(task: ITaskCreated) {
+
+        async create(task: ITaskCreated): Promise<ITask | IErrorMessage> {
             try {
-                const { data } = await axios.post(TASKS_URL,
+                const { data } = await axios.post<ITaskCreated, AxiosResponse<ITask | IErrorMessage>>(TASKS_URL,
                     task,
                     {
                         headers: {
@@ -82,27 +85,26 @@ export const api = Object.freeze({
 
                 return data
             } catch (error: any) {
-                return error.response.data
+                return error.response.data || { error: 'Unknown error occurred' }
             }
 
         },
-        async delete(taskId?: string) {
-            try{
-                const {data} = await axios.delete(`${TASKS_URL}/${taskId}`, {
+        async delete(taskId?: string): Promise<void | IErrorMessage> {
+            try {
+                await axios.delete<void>(`${TASKS_URL}/${taskId}`, {
                     headers: {
                         Authorization: `Bearer ${api.token}`
                     }
                 })
-
-                return data
             } catch (error: any) {
-                return error.response.data
+                return error.response.data || { error: 'Unknown error occurred' }
             }
-            
+
         },
-        async update(task: ITaskCreated, id?: string) {
+
+        async update(task: ITaskCreated, id?: string): Promise<ITask | IErrorMessage> {
             try {
-                const { data } = await axios.put(`${TASKS_URL}/${id}`,
+                const { data } = await axios.put<ITaskCreated, AxiosResponse<ITask | IErrorMessage>>(`${TASKS_URL}/${id}`,
                     task,
                     {
                         headers: {
@@ -112,7 +114,7 @@ export const api = Object.freeze({
 
                 return data
             } catch (error: any) {
-                return error.response.data
+                return error.response.data || { error: 'Unknown error occurred' }
             }
 
         },

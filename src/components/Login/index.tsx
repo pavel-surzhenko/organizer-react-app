@@ -21,8 +21,8 @@ export const LoginForm: React.FC = () => {
         const token = await useLogin(data);
 
         if ('data' in token) {
-            dispatch(authActions.setToken(token.data));
             localStorage.setItem('token', token.data);
+            dispatch(authActions.setToken(token.data));
             toast('Welcome');
             navigate('/task-manager');
         } else {
