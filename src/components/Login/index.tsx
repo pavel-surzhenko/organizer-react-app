@@ -1,3 +1,4 @@
+import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -23,7 +24,7 @@ export const LoginForm: React.FC = () => {
             localStorage.setItem('token', token.data);
             navigate('/task-manager');
         } else {
-            dispatch(authActions.setError(token.message))
+            dispatch(authActions.setError(token.message));
         }
     });
 
@@ -38,12 +39,26 @@ export const LoginForm: React.FC = () => {
                             type='text'
                             {...form.register('email')}
                         />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='email'
+                            render={({ message }) => (
+                                <span className='errorMessage'>{message}</span>
+                            )}
+                        />
                     </label>
                     <label className='label'>
                         <input
                             type='password'
                             placeholder='Password'
                             {...form.register('password')}
+                        />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='password'
+                            render={({ message }) => (
+                                <span className='errorMessage'>{message}</span>
+                            )}
                         />
                     </label>
                     <input
@@ -60,4 +75,3 @@ export const LoginForm: React.FC = () => {
         </section>
     );
 };
-
