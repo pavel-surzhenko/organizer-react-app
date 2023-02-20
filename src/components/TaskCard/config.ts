@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { ITag } from '../../api';
 
 export const schema: yup.SchemaOf<INewTask> = yup.object().shape({
     title: yup
@@ -20,4 +21,13 @@ export interface INewTask {
     deadline?: Date
     description: string
     tag?: string
+}
+
+export interface ITaskSeleсted {
+    id?: string;
+    completed?: boolean;
+    title?: string;
+    description?: string;
+    deadline?: string;
+    tag?: ITag;
 }

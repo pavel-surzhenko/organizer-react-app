@@ -1,3 +1,4 @@
+// Core
 import { ErrorMessage } from '@hookform/error-message';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
@@ -5,12 +6,14 @@ import ReactDatePicker from 'react-datepicker';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+
+// Config
 import { api, ITag } from '../../api';
 import { toastOptions } from '../../constants/toastOptions';
 import { authActions, tagsActions, taskActions } from '../../lib/redux/actions';
 import { getSelectedTask, getTagId, getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
-import { INewTask, schema } from './config';
+import { INewTask, ITaskSeleсted, schema } from './config';
 
 export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
     const dispatch = useDispatch();
@@ -220,11 +223,3 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
     );
 };
 
-interface ITaskSeleсted {
-    id?: string;
-    completed?: boolean;
-    title?: string;
-    description?: string;
-    deadline?: string;
-    tag?: ITag;
-}

@@ -73,7 +73,7 @@ export const LoginForm: React.FC = () => {
                     />
                 </fieldset>
                 <p>
-                    if you don&#39;t have an account, you can
+                    {`if you don't have an account, you can.`}
                     <Link to='/signup'> register</Link>
                 </p>
             </form>
