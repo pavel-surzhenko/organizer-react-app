@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { api, ITag } from '../../api';
+import { toastOptions } from '../../constants/toastOptions';
 import { authActions, tagsActions, taskActions } from '../../lib/redux/actions';
 import { getSelectedTask, getTagId, getTags } from '../../lib/redux/selectors';
 import { Tag } from '../Tag';
@@ -59,7 +60,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
         if ('data' in token) {
             dispatch(taskActions.setTaskId(''));
             dispatch(taskActions.fetchTaskAsync());
-            toast(`${isNew ? 'Task created' : 'Task updated'}`);
+            toast.success(`${isNew ? 'Task created' : 'Task updated'}`, toastOptions);
             form.reset();
         } else {
             dispatch(authActions.setError(token.message));
@@ -81,7 +82,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
         } else {
             dispatch(taskActions.setTaskId(''));
             dispatch(taskActions.fetchTaskAsync());
-            toast('Task deleted');
+            toast.success('Task deleted', toastOptions);
         }
     };
 
@@ -99,7 +100,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
         if ('data' in token) {
             dispatch(taskActions.setTaskId(''));
             dispatch(taskActions.fetchTaskAsync());
-            toast('Task completed');
+            toast.info('Task completed', toastOptions);
         } else {
             dispatch(authActions.setError(token.message));
         }
