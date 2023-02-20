@@ -10,17 +10,22 @@ export const api = Object.freeze({
         return localStorage.getItem('token');
     },
     auth: {
-        async signup(userInfo: ISignUp): Promise<IToken> {
-            const { data } = await axios.post<ISignUp, AxiosResponse<IToken>>(
-                `${AUTH_URL}/registration`,
-                userInfo,
-                {
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                });
-
-            return data;
+        async signup(userInfo: ISignUp): Promise<IToken | IErrorMessage> {
+            try {
+                const { data } = await axios.post<ISignUp, AxiosResponse<IToken>>(
+                    `${AUTH_URL}/registration`,
+                    userInfo,
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                        },
+                    });
+    
+                return data;
+            } catch (error: any) {
+                return error.response.data
+            }
+            
         },
 
         async login(credentials: string): Promise<IToken | IErrorMessage> {

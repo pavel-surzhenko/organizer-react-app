@@ -15,13 +15,16 @@ export const SignUpForm: React.FC = () => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = form.handleSubmit(async (data: ISignUpFormShape) => {
-        const { confirmPassword, ...newUser } = data;
-        const { data: token } = await api.auth.signup(newUser);
-        if (token) {
-            dispatch(authActions.setToken(token));
-            localStorage.setItem('token', token);
+    const onSubmit = form.handleSubmit(async (formData: ISignUpFormShape) => {
+        const { confirmPassword, ...newUser } = formData;
+        const token = await api.auth.signup(newUser);
+
+        if ('data' in token) {
+            dispatch(authActions.setToken(token.data));
+            localStorage.setItem('token', token.data);
             navigate('/task-manager');
+        } else {
+            dispatch(authActions.setError(token.message));
         }
     });
 
