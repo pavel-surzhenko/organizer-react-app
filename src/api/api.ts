@@ -5,14 +5,13 @@ import { ISignUp } from '../components/SignUp/config';
 import { TASKS_URL, AUTH_URL, TAGS_URL } from './config';
 
 
-
 export const api = Object.freeze({
     get token() {
         return localStorage.getItem('token');
     },
     auth: {
-        async signup(userInfo: ISignUp): Promise<ISignUpWithToken> {
-            const { data } = await axios.post<ISignUp, AxiosResponse<ISignUpWithToken>>(
+        async signup(userInfo: ISignUp): Promise<IToken> {
+            const { data } = await axios.post<ISignUp, AxiosResponse<IToken>>(
                 `${AUTH_URL}/registration`,
                 userInfo,
                 {
@@ -24,17 +23,22 @@ export const api = Object.freeze({
             return data;
         },
 
-        async login(credentials: string): Promise<string> {
-            const { data } = await axios.get<ILoginFormShape, AxiosResponse<ILogin>>(
-                `${AUTH_URL}/login`,
-                {
-                    headers: {
-                        Authorization: `Basic ${credentials}`,
-                    },
-                }
-            )
+        async login(credentials: string): Promise<IToken | IErrorMessage> {
+            try {
+                const { data } = await axios.get<ILoginFormShape, AxiosResponse<IToken>>(
+                    `${AUTH_URL}/login`,
+                    {
+                        headers: {
+                            Authorization: `Basic ${credentials}`,
+                        },
+                    }
+                )
 
-            return data.data;
+                return data;
+            } catch (error: any) {
+                return error.response.data
+            }
+
         }
     },
     tasks: {
@@ -65,7 +69,7 @@ export const api = Object.freeze({
                 }
             })
         },
-        async update(task: ITaskCreated, id?: string) {
+        async update(task: ITaskCreated, id?: string): Promise<void> {
             await axios.put(`${TASKS_URL}/${id}`,
                 task,
                 {
@@ -84,16 +88,14 @@ export const api = Object.freeze({
     }
 });
 
-export interface ILogin {
+export interface IToken {
     data: string;
 }
 
-export interface ISignUpWithToken {
-    data: string;
-}
-
-export interface IUpdatePassword {
-    data: string;
+export interface IErrorMessage {
+    error: string
+    message: string
+    statusCode: string
 }
 
 export interface ITask {

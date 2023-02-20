@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { api } from '../../api';
+import { useLogin } from '../../hooks/useLogin';
 import { authActions } from '../../lib/redux/actions';
 import { ILoginFormShape, schema } from './config';
 
@@ -16,13 +16,14 @@ export const LoginForm: React.FC = () => {
     });
 
     const onSubmit = form.handleSubmit(async (data: ILoginFormShape) => {
-        const token = await api.auth.login(
-            window.btoa(`${data?.email}:${data?.password}`)
-        );
-        if (token) {
-            dispatch(authActions.setToken(token));
-            localStorage.setItem('token', token);
+        const token = await useLogin(data);
+
+        if ('data' in token) {
+            dispatch(authActions.setToken(token.data));
+            localStorage.setItem('token', token.data);
             navigate('/task-manager');
+        } else {
+            dispatch(authActions.setError(token.message))
         }
     });
 
@@ -59,3 +60,4 @@ export const LoginForm: React.FC = () => {
         </section>
     );
 };
+

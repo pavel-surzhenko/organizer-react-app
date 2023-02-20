@@ -13,6 +13,7 @@ import './theme/styles/index.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 render(
     <Provider store = { store }>
         <BrowserRouter>

@@ -80,6 +80,7 @@ export const TaskCardForm: React.FC<ITaskSeleсted> = (props) => {
         }
         
         await api.tasks.update(dataT, props?.id);
+        dispatch(taskActions.setTaskId(''));
         dispatch(taskActions.fetchTaskAsync());
     }
 
