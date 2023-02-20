@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ErrorMessage } from '@hookform/error-message';
 import { ISignUpFormShape, schema } from './config';
 import { api } from '../../api';
 import { authActions } from '../../lib/redux/actions';
@@ -39,12 +40,26 @@ export const SignUpForm: React.FC = () => {
                             type='text'
                             {...form.register('name')}
                         />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='name'
+                            render={({ message }) => (
+                                <span className='errorMessage'>{message}</span>
+                            )}
+                        />
                     </label>
                     <label className='label'>
                         <input
                             type='text'
                             placeholder='Email'
                             {...form.register('email')}
+                        />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='email'
+                            render={({ message }) => (
+                                <span className='errorMessage'>{message}</span>
+                            )}
                         />
                     </label>
                     <label className='label'>
@@ -53,12 +68,26 @@ export const SignUpForm: React.FC = () => {
                             placeholder='Password'
                             {...form.register('password')}
                         />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='password'
+                            render={({ message }) => (
+                                <span className='errorMessage'>{message}</span>
+                            )}
+                        />
                     </label>
                     <label className='label'>
                         <input
                             type='password'
                             placeholder='Confirm password'
                             {...form.register('confirmPassword')}
+                        />
+                        <ErrorMessage
+                            errors={form.formState.errors}
+                            name='confirmPassword'
+                            render={() => (
+                                <span className='errorMessage'>{'passwords do not match'}</span>
+                            )}
                         />
                     </label>
                     <input
