@@ -1,7 +1,8 @@
-import { LoginForm } from "../components";
+import { LoginForm } from '../components';
+import { useToken } from '../hooks/useToken';
 
 export const LoginPage: React.FC = () => {
-    return (
-        <LoginForm />
-    );
+    useToken();
+
+    return <LoginForm />;
 };

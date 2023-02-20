@@ -14,6 +14,7 @@ export const Navigation: React.FC = () => {
             dispatch(authActions.setError(error.message));
         } else {
             navigate('/login');
+            localStorage.removeItem('token');
         }
     };
 

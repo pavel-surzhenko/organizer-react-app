@@ -1,7 +1,8 @@
-import { Tasks } from "../components";
+import { Tasks } from '../components';
+import { useToken } from '../hooks/useToken';
 
 export const TasksPage: React.FC = () => {
-    return (
-        <Tasks />
-    );
+    useToken();
+
+    return <Tasks />;
 };
