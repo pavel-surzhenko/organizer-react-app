@@ -11,11 +11,12 @@ export const Navigation: React.FC = () => {
 
     const logOut = async () => {
         const error = await api.auth.logout();
+        
         if (error) {
             dispatch(authActions.setError(error.message));
         } else {
-            localStorage.removeItem('token');
             toast('See you soon');
+            localStorage.removeItem('token');
             navigate('/login');
         }
     };
