@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.1effb777.chunk.css",
-    "main.js": "/static/js/main.740462c1.chunk.js",
-    "main.js.map": "/static/js/main.740462c1.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.9fc469fb.js",
-    "runtime-main.js.map": "/static/js/runtime-main.9fc469fb.js.map",
-    "static/css/2.dbb05ec0.chunk.css": "/static/css/2.dbb05ec0.chunk.css",
-    "static/js/2.dcf8ad72.chunk.js": "/static/js/2.dcf8ad72.chunk.js",
-    "static/js/2.dcf8ad72.chunk.js.map": "/static/js/2.dcf8ad72.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.dbb05ec0.chunk.css.map": "/static/css/2.dbb05ec0.chunk.css.map",
-    "static/css/main.1effb777.chunk.css.map": "/static/css/main.1effb777.chunk.css.map",
-    "static/js/2.dcf8ad72.chunk.js.LICENSE.txt": "/static/js/2.dcf8ad72.chunk.js.LICENSE.txt",
-    "static/media/index.scss": "/static/media/la-solid-900.a8130346.svg"
+    "main.css": "/organizer-react-app/static/css/main.f7397866.chunk.css",
+    "main.js": "/organizer-react-app/static/js/main.740462c1.chunk.js",
+    "main.js.map": "/organizer-react-app/static/js/main.740462c1.chunk.js.map",
+    "runtime-main.js": "/organizer-react-app/static/js/runtime-main.705ba340.js",
+    "runtime-main.js.map": "/organizer-react-app/static/js/runtime-main.705ba340.js.map",
+    "static/css/2.dbb05ec0.chunk.css": "/organizer-react-app/static/css/2.dbb05ec0.chunk.css",
+    "static/js/2.dcf8ad72.chunk.js": "/organizer-react-app/static/js/2.dcf8ad72.chunk.js",
+    "static/js/2.dcf8ad72.chunk.js.map": "/organizer-react-app/static/js/2.dcf8ad72.chunk.js.map",
+    "index.html": "/organizer-react-app/index.html",
+    "static/css/2.dbb05ec0.chunk.css.map": "/organizer-react-app/static/css/2.dbb05ec0.chunk.css.map",
+    "static/css/main.f7397866.chunk.css.map": "/organizer-react-app/static/css/main.f7397866.chunk.css.map",
+    "static/js/2.dcf8ad72.chunk.js.LICENSE.txt": "/organizer-react-app/static/js/2.dcf8ad72.chunk.js.LICENSE.txt",
+    "static/media/index.scss": "/organizer-react-app/static/media/la-solid-900.a8130346.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.9fc469fb.js",
+    "static/js/runtime-main.705ba340.js",
     "static/css/2.dbb05ec0.chunk.css",
     "static/js/2.dcf8ad72.chunk.js",
-    "static/css/main.1effb777.chunk.css",
+    "static/css/main.f7397866.chunk.css",
     "static/js/main.740462c1.chunk.js"
   ]
 }
