@@ -6,10 +6,11 @@
     "email": "pavel.surzhenko@icloud.com",
     "name": "Pavlo Surzhenko"
   },
+  "homepage": "https://pavel-surzhenko.github.io/organizer-react-app/",
   "license": "MIT",
   "scripts": {
     "dev": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build",
+    "build": "react-scripts  --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start": "npm run build && serve -s build",
